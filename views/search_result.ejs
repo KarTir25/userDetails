@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Search Result | Mongo DB | Final</title>
+</head>
+<body>
+    <h1>User Search Result</h1>
+    
+    <table border="2">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Full Name</th>
+                <th>Username</th>
+                <th>Phone Number</th>
+                <th>Email Address</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><%= user.fullName %></td>
+                <td><%= user.username %></td>
+                <td><%= user.phoneNumber %></td>
+                <td><%= user.emailAddress %></td>
+            </tr>
+        </tbody>
+    </table>
+    <!-- Link to user data page -->
+    <a href="/user_data">Back to User Data</a>
+</body>
+</html>

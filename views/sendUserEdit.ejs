@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit User | MySQL | Final</title>
+</head>
+<body>
+    <h1>Edit User</h1>
+    <form id="editForm">
+        <input type="hidden" name="userId" id="userId" value="<%= userData.id %>">
+        <label for="fullName">Full Name:</label>
+        <input type="text" id="fullName" name="fullName" value="<%= userData.fullName %>" required>
+        <br>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" value="<%= userData.username %>" required>
+        <br>
+        <label for="emailAddress">Email:</label>
+        <input type="text" id="emailAddress" name="emailAddress" value="<%= userData.emailAddress %>" required>
+        <br>
+        <label for="phoneNumber">Phone Number :</label>
+        <input type="text" id="phoneNumber" name="phoneNumber" value="<%= userData.phoneNumber %>" required>
+        <br>
+        <label for="dateOfBirth">Date Of Birth:</label>
+        <input type="date" id="dateOfBirth" name="dateOfBirth" value="<%= userData.dateOfBirth %>" required>
+        <br>
+        <button type="button" onclick="fn_saveUser()">Save</button>
+        <button type="button" onclick="fn_cancelEdit()">Cancel</button>
+    </form>
+    <div>
+        <script>
+            function fn_cancelEdit()
+            {
+                console.log('Canceling the edit user request...');
+                window.location.href = '/user_data';
+            }
+            async function fn_saveUser()
+            {
+                const fullName = document.getElementById('fullName').value.trim();
+                const username = document.getElementById('username').value.trim();
+                const emailAddress = document.getElementById('emailAddress').value.trim();
+                const phoneNumber = document.getElementById('phoneNumber').value.trim();
+                const dateOfBirth = document.getElementById('dateOfBirth').value.trim();
+
+                if (!fullName || !username || !emailAddress || !phoneNumber || !dateOfBirth) {
+                    alert('Fields can not be empty.');
+                    return;
+                }
+                console.log('Saving the edited user data...');
+                console.log('Saving the edited user data...');
+
+                const userId = document.getElementById('userId').value;
+
+                const formData = new FormData();
+                formData.append('userId', userId);
+                formData.append('fullName', fullName);
+                formData.append('username', username);
+                formData.append('emailAddress', emailAddress);
+                formData.append('phoneNumber', phoneNumber);
+                formData.append('dateOfBirth', dateOfBirth);
+
+                try 
+                {
+                    const GoTO = `/user/${userId}`;
+
+                    const bodyData = JSON.stringify({ fullName, username, emailAddress, phoneNumber, dateOfBirth });
+                        
+                    const requestData =  {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: bodyData
+                    };
+                    console.log(bodyData);
+
+                    const response = await fetch(GoTO, requestData );
+
+                    if (!response.ok)
+                    {
+                        console.log(response);
+                        throw new Error('Failed to save user details');
+                    }
+
+                    console.log('User details saved successfully');
+                    // window.location.href = '/user_data'; // Redirect to user_data page after successful update
+                } 
+                catch (error) 
+                {
+                    console.error('Error saving user details:', error);
+                    alert('An error occurred while saving user details.');
+                }
+            }
+        </script>
+    </div>
+</body>
+</html>

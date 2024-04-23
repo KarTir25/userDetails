@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User | Registration | Mongo DB</title>
+</head>
+<body>
+    <h1>User Registration</h1>
+    <form id="registrationForm"action="/user_registration" method="post">
+        <!-- Form fields for registration -->
+                
+        <label for="fullName">Your Full Name</label>
+        <input type="text" name="fullName" id="fullName" placeholder="Full Name" required="">
+        <br>
+               
+        <label for="dateOfBirth">Date Of Birth</label>
+        <input type="date" name="dateOfBirth" id="dateOfBirth" required>
+        <br>      
+                    
+        <label for="phoneNumber">Phone Number</label>
+        <input id="phoneNumber" name="phoneNumber" type="tel" placeholder="Phone Number">
+        <br>
+        
+        <label  for="emailAddress">Email-id</label>
+        <input required id="emailAddress" name="emailAddress" type="email" placeholder="E-Mail Id">
+        <br>
+
+        <label for="username">Username</label>
+        <input id="username" name="username" type="text" required placeholder="Username">
+        <br>
+                           
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" placeholder="••••••••" required="">
+        <br>
+
+        <label for="confirmPassword">Confirm Password</label>
+        <input type="password" name="confirmPassword" id="confirmPassword" placeholder="••••••••" required="">
+        <br>
+                            
+                
+        <button type="submit" onclick="validateForm()">Sign Up</button>
+        <a href="/user_login"><button type="submit">Cancel</button></a>
+                   
+    </form>
+</body>
+</html>

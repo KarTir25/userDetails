@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Data | MySQL | Final</title>
+</head>
+<body>
+    <!-- Link to user registration page -->
+    <a href="/user_registration">Register</a> <br>
+    <!-- Link to user login page -->
+    <a href="/user_login">Login</a> <br>
+    
+    <h1>User Data</h1>
+    <!-- <a href='/senduser/'>
+        <button type="submit" onclick="editUser1('4')">EditUser</button>
+    </a> -->
+
+    <!-- Search form for user data -->
+    <form action="/user_search" method="POST" id="searchForm">
+        <button type="submit" >Search</button>
+        
+        <br>
+        <input type="text" name="username" placeholder="Enter username">
+        <input type="text" name="fullName" placeholder="Enter Full Name" id="txt_fName">
+        <input type="text" name="emailAddress" placeholder="Enter Email Address" id="txt_email">
+        <input type="date" name="dateOfBirth" placeholder="" id="dp_dob"> 
+        <select name="dobComparison" id="slc_dob" onchange="toggleToDateInput()">
+            <option value="Equal">Equal</option>
+            <option value="Greater">Greater than</option>
+            <option value="Less">Less than</option>
+            <option value="Range">Range</option>
+        </select>
+        <div id="dateOfBirthRange" style="display: none;">
+            <input type="date" name="toDate" id="toDob">
+        </div>
+    </form>
+    <br>
+    
+    <% if (data.length > 0) { %>     
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>ID</th> 
+                    <th>Name</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
+                    <th>Date Of Birth</th>
+                    <th>Delete</th>
+                    <th>Edit</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% data.forEach(user => { %>
+                    <tr>
+                        <td><%= user.id %></td> 
+                        <td><%= user.fullName %></td>
+                        <td><%= user.username %></td>
+                        <td><%= user.emailAddress %></td>
+                        <td><%= user.phoneNumber %></td>
+                        <td><%= user.dateOfBirth %></td>
+                        <td>
+                            <!-- Form to delete user -->
+                            <form action="/user/<%= user.username %>/delete" method="POST">
+                                <button type="submit">Delete</button>
+                            </form>
+                        </td>
+                        <td>
+                            <a href="/senduser/<%= user.id %>">
+                                <!-- Button to open the Edit User modal -->
+                                <button type="button" >Edit</button>
+                            </a>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    <% } %>
+    <script>
+       
+        function toggleToDateInput() 
+        {
+            var selectElement = document.getElementById("slc_dob");
+            var selectedValue = selectElement.value;
+            
+            var toDobInput = document.getElementById("dateOfBirthRange");
+            toDobInput.style.display = (selectedValue === 'Range') ? 'block' : 'none';
+        }
+
+        document.addEventListener('DOMContentLoaded', async function() 
+        {
+            const searchForm = document.getElementById('searchForm');
+
+            await function sendSearchRequest(event) 
+            {
+                event.preventDefault(); // Prevent the default form submission
+
+                const formData = new FormData(searchForm);
+                const searchParams = {};
+
+                // Convert form data to object of key-value pairs
+                formData.forEach((value, key) => {
+                    // Only include fields with values
+                    if (value !== '') 
+                    {
+                        searchParams[key] = value;
+                    }
+                });
+
+                // Client-side validation
+                if (Object.keys(searchParams).length === 0) 
+                {
+                    alert('Please fill out at least one search criteria.');
+                    return;
+                }
+
+                // Log the search parameters
+                console.log('Search parameters:', searchParams);
+
+                var endPoint = '/user_search';
+
+                // Send the search request to the backend
+                fetch( endPoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(searchParams)
+                })
+                .then(res =>{
+                    if(!res.ok){
+                        throw new Error('Network Error...');
+                    }
+                    console.log(res);
+                    return res.json();
+                })
+                
+                .then(data => {
+                    // return data.text();
+                    console.log('-------------------------');
+                    console.log('Finally...',data);
+                    console.log('-------------------------');
+                })
+                .catch(error => {
+                    console.error('Error in searching user data:', error);
+                    alert('An error occurred while processing your request.');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
